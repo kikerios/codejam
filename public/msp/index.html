@@ -1,0 +1,161 @@
+<!DOCTYPE>
+<html ng-app="myApp">
+    <head>
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+
+        <title>Problem A. Minimum Scalar Product</title>
+    </head>
+    <body>
+        <div class="container" ng-controller="MspAppCtrl" style="margin-bottom: 330px;">
+
+            <h1>Problem A. Minimum Scalar Product</h1>
+
+
+            <div id="dsb-problem-content-div0" class="dsb-problem-content-div" style="background: #F5F5F5;padding: 25px;border-radius: 20px;">
+                <p class="problem-item">Problem</p>
+                <p>
+                    You are given two vectors v<sub>1</sub>=(x<sub>1</sub>,x<sub>2</sub>,...,x<sub>n</sub>) and v<sub>2</sub>=(y<sub>1</sub>,y<sub>2</sub>,...,y<sub>n</sub>). The scalar product of these vectors is a single number, calculated as x<sub>1</sub>y<sub>1</sub>+x<sub>2</sub>y<sub>2</sub>+...+x<sub>n</sub>y<sub>n</sub>. 
+                </p>
+
+                <p>
+                    Suppose you are allowed to permute the coordinates of each vector as you wish. Choose two permutations such that the scalar product of your two new vectors is the smallest possible, and output that minimum scalar product.
+                </p>
+
+                <p class="problem-item">Input</p>
+                The first line of the input file contains integer number <b>T</b> - the number of test cases. For each test case, the first line contains integer number <b>n</b>. 
+                The next two lines contain <b>n</b> integers each, giving the coordinates of  v<sub>1</sub> and v<sub>2</sub> respectively.
+                <p></p>
+
+                <p class="problem-item">Output</p>
+                <p>
+                    For each test case, output a line
+                </p><pre>Case #<b>X</b>: <b>Y</b></pre>
+                where <b>X</b> is the test case number, starting from 1, and <b>Y</b> is the minimum scalar product of all permutations of the two given vectors.
+                <p></p>
+
+                <p class="problem-item">Limits</p>
+                <p>
+                </p>
+
+                <p class="problem-item">Small dataset</p>
+                <p>
+                    <b>T</b> = 1000<br>
+                    1 ≤ <b>n</b> ≤ 8<br>
+                    -1000 ≤ <b>x</b><sub>i</sub>, <b>y</b><sub>i</sub> ≤ 1000
+                </p>
+
+                <p class="problem-item">Sample</p>
+                <div class="problem-io-wrapper" style="display: block; padding: 9.5px; margin: 0 0 10px; font-size: 13px; line-height: 1.42857143; color: #333; word-break: break-all; word-wrap: break-word; background-color: #f5f5f5; border: 1px solid #ccc; border-radius: 4px;">
+                    <table>
+                        <tbody><tr>
+                                <td>
+                                    <br>
+                                    <span class="problem-item-gray">Input</span>
+                                    <br>&nbsp;
+                                </td>
+                                <td>
+                                    <br>
+                                    <span class="problem-item-gray">Output</span>
+                                    <br>&nbsp;
+                                </td>
+                            </tr>
+                            <tr>
+                                <td valign="top">
+                                    <code>
+                                        2<br>
+                                        3<br>
+                                        1 3 -5<br>
+                                        -2 4 1<br>
+                                        5<br>
+                                        1 2 3 4 5<br>
+                                        1 0 1 0 1<br>
+                                        <br>
+                                    </code>
+                                </td>
+                                <td valign="top">
+                                    <code>
+                                        Case #1: -25<br>
+                                        Case #2: 6<br>
+                                        <br>
+                                    </code>
+                                </td>
+                            </tr>
+                        </tbody></table>
+                </div>
+                <a href="http://code.google.com/codejam/contest/32016/dashboard#s=p0" target="_blank">Read more!</a>
+            </div>
+
+            <hr/>
+
+            <h2>Demo</h2>
+
+            <form class="form-horizontal">
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="_n">Select "n":</label>
+                    <div class="col-sm-10">
+                        <select class="form-control" id="_n" ng-model="msp.size">
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                            <option>6</option>
+                            <option>7</option>
+                            <option>8</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="_va">Vector "A":</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="_va" placeholder="Enter Vector A separated by spaces (3 9 -1 0)" ng-model="msp.va">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="_vb">Vector "B":</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="_vb" placeholder="Enter Vector B separated by spaces (5-2 1 -1)" ng-model="msp.vb">
+                    </div>
+                </div>
+                <div class="form-group">        
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="button" class="btn btn-info" ng-click="random()">Random</button> 
+                        <button type="button" class="btn btn-default" ng-click="addMSP()">Save</button>
+                    </div>
+                </div>
+            </form>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Case</th>         
+                        <th>Size</th>         
+                        <th>Vector A</th>
+                        <th>Vector B</th>
+                        <th>Minimum Scalar Product</th>
+                        <th>Action</th>
+                        <th>&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="msp in mspList">
+                        <td>#{{$index + 1}}</td>
+                        <td>{{msp.size}}</td>
+                        <td>{{msp.va}}</td>
+                        <td>{{msp.vb}}</td>
+                        <td>{{msp.msp}}</td>
+                        <td><button class="btn btn-danger" ng-click="remove(msp._id)">Remove</button></td>
+                        <td><button class="btn btn-info" ng-click="clone(msp._id)">Clone</button></td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.12/angular.min.js"></script>
+        <script src="app.js"></script>
+    </body>
+</html>

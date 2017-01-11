@@ -26,6 +26,9 @@ router.get('/', function (req, res) {
 
 app.use(router);
 
+//static files
+app.use('/msp', express.static(__dirname + '/public/msp'));
+
 msp.route('/msp')
         .get(mspCtrl.findAll)
         .post(mspCtrl.add);
