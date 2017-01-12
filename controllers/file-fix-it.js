@@ -22,8 +22,7 @@ exports.findByPath = function (req, res) {
     var config = require('../config.js');
     var FfiModel = require('../models/file-fix-it.js');
 
-    var regexp = new RegExp("^" + req.query.path);
-    FfiModel.find({path: regexp}, function (err, ffi) {
+    FfiModel.find({path: req.query.path}, function (err, ffi) {
 
         if (err)
             return res.status(500).jsonp(config.error_response(err.message, err.errors));
@@ -169,27 +168,52 @@ exports.delete = function (req, res) {
     var config = require('../config.js');
     var FfiModel = require('../models/file-fix-it.js');
 
-    var regexp = new RegExp("^" + req.query.path);
-    FfiModel.find({path: regexp}, function (err, ffis) {
+    var path_array = parse_paths([req.query.path])[0].split("/");
+    var parent = "/" + path_array.slice(0, path_array.length - 1).join("/");
+    var name = path_array[path_array.length - 1];
+    var new_path = parent + "/" + name;
 
-        if (err)
-            return res.status(500).jsonp(config.error_response(err.message, err.errors));
+    console.log("parent " + parent);
+    console.log("name " + name);
 
-        console.log('DELETE /ffi?path=' + req.query.path);
-        console.log(ffis);
+    //validate if exist
+    FfiModel.findOne({path: parent, name: name}, function (err, ffi) {
 
-        for (i = 0; i < ffis.length; i++) {
-            ffis[i].remove(function (errs) {
+        console.log('DELETE /ffi?path=' + new_path);
+        console.log(ffi);
 
-                if (errs) {
-                    console.log(errs);
+        ffi.remove(function (err_x) {
+
+            if (err_x) {
+                return res.status(500).jsonp(config.error_response(err_x.message, err_x.errors));
+            }
+
+            var regexp = new RegExp("^" + new_path);
+            FfiModel.find({path: regexp}, function (err, ffis) {
+
+                if (err)
+                    return res.status(500).jsonp(config.error_response(err.message, err.errors));
+
+                console.log('DELETE /ffi?path=' + new_path);
+                console.log(ffis);
+
+                for (i = 0; i < ffis.length; i++) {
+                    ffis[i].remove(function (errs) {
+
+                        if (errs) {
+                            console.log(errs);
+                        }
+
+                    });
                 }
 
-            });
-        }
+                res.status(200).send();
 
-        res.status(200).send();
+            });
+
+        });
 
     });
+
 
 };
