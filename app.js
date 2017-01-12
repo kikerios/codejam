@@ -14,20 +14,15 @@ var config = require('./config.js');
 var mspCtrl = require('./controllers/minimum-scalar-product');
 
 //Routers
-var router = express.Router();
 var msp = express.Router();
 
 //database connection
 config.database_connect(mongoose);
 
-router.get('/', function (req, res) {
-    res.send("Hello World! (router)");
-});
-
-app.use(router);
-
 //static files
+app.use('/', express.static(__dirname + '/public/home'));
 app.use('/msp', express.static(__dirname + '/public/msp'));
+app.use('/nodejs-challenge', express.static(__dirname + '/public/nodejs-challenge'));
 
 msp.route('/msp')
         .get(mspCtrl.findAll)
