@@ -8,6 +8,19 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
 
         <title>Problem A. Minimum Scalar Product</title>
+
+        <link href="https://fonts.googleapis.com/css?family=Yantramanav" rel="stylesheet">
+        <style>
+
+            html, body {
+                font-family: 'Yantramanav', sans-serif !important;
+            }
+
+            h1, h2, h3, h4, h5, h6 {
+                color: #ff6666;
+            }
+            
+        </style>
     </head>
     <body>
         <div class="container" ng-controller="MspAppCtrl" style="margin-bottom: 330px;">
@@ -88,6 +101,57 @@
                 </div>
                 <a href="http://code.google.com/codejam/contest/32016/dashboard#s=p0" target="_blank">Read more!</a>
             </div>
+
+            <hr/>
+
+            <h2>API (CRUD)</h2>
+
+            <dl class="dl-horizontal">
+                <dt>
+                    GET
+                </dt>
+                <dd>
+                    <code>
+                        curl -X GET -H "Content-Type: application/json" -H "Cache-Control: no-cache" "http://162.218.236.112:3000/api/msp/"
+                    </code>
+                </dd>
+
+                <dt>
+                    POST
+                </dt>
+                <dd>
+                    <code>
+                        curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache" -d '{
+                        "size" :3,
+                        "va" : [1,3,-5],
+                        "vb" : [-2,4,1]
+                        }' "http://162.218.236.112:3000/api/msp/"
+                    </code>
+                </dd>
+
+                <dt>
+                    PUT
+                </dt>
+                <dd>
+                    <code>
+                        curl -X PUT -H "Content-Type: application/json" -H "Cache-Control: no-cache" -d '{
+                        "size" :4,
+                        "va" : [1,3,-5,5],
+                        "vb" : [-2,4,1,5]
+                        }' "http://162.218.236.112:3000/api/msp/[REPLACE_ID]"
+                    </code>
+                </dd>
+
+                <dt>
+                    DELETE
+                </dt>
+                <dd>
+                    <code>
+                        curl -X DELETE -H "Cache-Control: no-cache" -d '' "http://162.218.236.112:3000/api/msp/[REPLACE_ID]"
+                    </code>
+                </dd>
+
+            </dl>
 
             <hr/>
 
