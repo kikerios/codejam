@@ -199,7 +199,7 @@ exports.delete = function (req, res) {
     var path_array = parse_paths([req.query.path])[0].split("/");
     var parent = "/" + path_array.slice(0, path_array.length - 1).join("/");
     var name = path_array[path_array.length - 1];
-    var new_path = parent + "/" + name;
+    var new_path = (parent != "/" ? parent : "") + "/" + name;
 
     console.log("parent " + parent);
     console.log("name " + name);
@@ -210,34 +210,38 @@ exports.delete = function (req, res) {
         console.log('DELETE /ffi?path=' + new_path);
         console.log(ffi);
 
-        ffi.remove(function (err_x) {
+        //delete folder
+        if (ffi != null) {
+            ffi.remove(function (errs) {
 
-            if (err_x) {
-                return res.status(500).jsonp(config.error_response(err_x.message, err_x.errors));
-            }
-
-            var regexp = new RegExp("^" + new_path);
-            FfiModel.find({path: regexp}, function (err, ffis) {
-
-                if (err)
-                    return res.status(500).jsonp(config.error_response(err.message, err.errors));
-
-                console.log('DELETE /ffi?path=' + new_path);
-                console.log(ffis);
-
-                for (i = 0; i < ffis.length; i++) {
-                    ffis[i].remove(function (errs) {
-
-                        if (errs) {
-                            console.log(errs);
-                        }
-
-                    });
+                if (errs) {
+                    console.log(errs);
                 }
 
-                res.status(200).send();
-
             });
+        }
+
+        //find childs
+        var regexp = new RegExp("^" + new_path);
+        FfiModel.find({path: regexp}, function (err, ffis) {
+
+            if (err)
+                return res.status(500).jsonp(config.error_response(err.message, err.errors));
+
+            console.log('DELETE /ffi?path=' + new_path);
+            console.log(ffis);
+
+            for (i = 0; i < ffis.length; i++) {
+                ffis[i].remove(function (errs) {
+
+                    if (errs) {
+                        console.log(errs);
+                    }
+
+                });
+            }
+
+            res.status(200).send();
 
         });
 
