@@ -5,7 +5,6 @@ exports.findAll = function (req, res) {
     var FfiModel = require('../models/file-fix-it.js');
 
     FfiModel.find()
-            .deepPopulate('childs.childs.childs.childs.childs.childs.childs.childs.childs')
             .exec(function (err, ffis) {
 
                 if (err)
