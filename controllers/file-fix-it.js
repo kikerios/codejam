@@ -4,15 +4,17 @@ exports.findAll = function (req, res) {
     var config = require('../config.js');
     var FfiModel = require('../models/file-fix-it.js');
 
-    FfiModel.find(function (err, ffis) {
+    FfiModel.find()
+            .deepPopulate('childs.childs.childs.childs.childs.childs.childs.childs.childs')
+            .exec(function (err, ffis) {
 
-        if (err)
-            return res.status(500).jsonp(config.error_response(err.message, err.errors));
+                if (err)
+                    return res.status(500).jsonp(config.error_response(err.message, err.errors));
 
-        console.log('GET /ffi');
-        res.status(200).jsonp(ffis);
+                console.log('GET /ffi');
+                res.status(200).jsonp(ffis);
 
-    });
+            });
 
 };
 
@@ -22,15 +24,17 @@ exports.findByPath = function (req, res) {
     var config = require('../config.js');
     var FfiModel = require('../models/file-fix-it.js');
 
-    FfiModel.find({path: req.query.path}, function (err, ffi) {
+    FfiModel.find({path: req.query.path})
+            .deepPopulate('childs.childs.childs.childs.childs.childs.childs.childs.childs')
+            .exec(function (err, ffi) {
 
-        if (err)
-            return res.status(500).jsonp(config.error_response(err.message, err.errors));
+                if (err)
+                    return res.status(500).jsonp(config.error_response(err.message, err.errors));
 
-        console.log('GET /ffi?path=' + req.query.path);
-        res.status(200).jsonp(ffi);
+                console.log('GET /ffi?path=' + req.query.path);
+                res.status(200).jsonp(ffi);
 
-    });
+            });
 };
 
 function parse_paths(paths) {
@@ -66,7 +70,7 @@ function load(obj) {
 
 }
 
-function save(obj, current_path, position) {
+function save(obj, current_path, position, ffi_parent) {
 
     var config = require('../config.js');
     var FfiModel = require('../models/file-fix-it.js');
@@ -95,7 +99,7 @@ function save(obj, current_path, position) {
             position++;
 
             if (position != current_path.length) {
-                save(obj, current_path, position);
+                save(obj, current_path, position, ffi);
             } else {
                 obj.current_array++;
                 load(obj);
@@ -120,14 +124,39 @@ function save(obj, current_path, position) {
                 console.log("newFFI.save");
                 console.log(ffi);
 
-                position++;
+                //update parent ffi_parent
+                if (ffi_parent != null) {
 
-                if (position != current_path.length) {
-                    save(obj, current_path, position);
+                    ffi_parent.childs.push(ffi);
+                    ffi_parent.save(function (ffi_parent_err) {
+
+                        console.log("update ffi_parent");
+                        console.log(ffi_parent);
+
+                        position++;
+
+                        if (position != current_path.length) {
+                            save(obj, current_path, position, ffi);
+                        } else {
+                            obj.current_array++;
+                            load(obj);
+                        }
+
+                    });
+
                 } else {
-                    obj.current_array++;
-                    load(obj);
+
+                    position++;
+
+                    if (position != current_path.length) {
+                        save(obj, current_path, position, ffi);
+                    } else {
+                        obj.current_array++;
+                        load(obj);
+                    }
                 }
+
+
 
             });
         }
