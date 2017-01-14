@@ -7,11 +7,11 @@
  - [Github](https://github.com/kikerios/codejam)
 
 ---
-**Kike Rios**
-hello@kikerios.me
-web.lrios@gmail.com
-Guatemala, Guatemala
-P: +(502) 4278-7363
-https://www.facebook.com/kikeriosdeveloper/
-https://twitter.com/kikeriosdev
-https://www.linkedin.com/in/kikerios
+- **Kike Rios**
+- hello@kikerios.me
+- web.lrios@gmail.com
+- Guatemala, Guatemala
+- P: +(502) 4278-7363
+- https://www.facebook.com/kikeriosdeveloper/
+- https://twitter.com/kikeriosdev
+- https://www.linkedin.com/in/kikerios
